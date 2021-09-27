@@ -5,7 +5,7 @@
     <div class='card mt-3'>
         <div class='card-body'>
             <h5 class="card-title mb-5">Tabela de vendas
-                <a href='' class='btn btn-secondary float-right btn-sm rounded-pill'><i class='fa fa-plus'></i>  Nova venda</a></h5>
+                <a href={{route('venda.create')}} class='btn btn-secondary float-right btn-sm rounded-pill'><i class='fa fa-plus'></i>  Nova venda</a></h5>
             <form>
                 <div class="form-row align-items-center">
                     <div class="col-sm-5 my-1">
@@ -13,13 +13,10 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Clientes</div>
                             </div>
-                            <select class="form-control" id="inlineFormInputName">
-                                <option>Clientes</option>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                            <select class="form-control" id="name" name="name">
+                                @foreach ($clienteResource as $cliente)
+                                <option value='{{$cliente->id}}'>{{$cliente->name}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -54,46 +51,61 @@
                     </th>
                 </tr>
                 <tr>
-                    <td>
-                        Perfect Caps
-                    </td>
-                    <td>
-                        20/07/2019 19h15
-                    </td>
-                    <td>
-                        R$ 100,00
-                    </td>
-                    <td>
-                        <a href='' class='btn btn-primary'>Editar</a>
-                    </td>
-                </tr>
+                    @foreach ($produtoResource as $produto)
+        <tr>
+          <th scope="row">{{$produto->id}}</th>
+          <td>{{$produto->name}}</td>
+          <td>{{$produto->preco}}</td>
+
+          <td>
+            <div class="container">
+            <button type="button" class="btn btn-outline-info btn-icon btn-lg btn-block" title='Editar' onclick='location.href="{{ route('produto.edit', $produto)}}"'>
+              Editar
+              <i class="fa fa-pen"></i>
+            </button>
+            <br>
+            <form action="{{route('produto.destroy',[$produto->id])}}" method="POST">
+              @method('DELETE')
+              @csrf
+              <button  type="submit" class="btn btn-outline-danger btn-icon btn-lg btn-block" title='Deletar'>
+                Deletar
+                <i class="fa fa-pen"></i>
+              </button>
+            </div>
+            </form>
+          </td>
+        </tr>
+    </div>
+      @endforeach
+
                 <tr>
-                    <td>
-                        Nature Caps
-                    </td>
-                    <td>
-                        20/07/2019 19h20
-                    </td>
-                    <td>
-                        R$ 125,00
-                    </td>
-                    <td>
-                        <a href='' class='btn btn-primary'>Editar</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Libid Caps
-                    </td>
-                    <td>
-                        20/07/2019 19h45
-                    </td>
-                    <td>
-                        R$ 110,00
-                    </td>
-                    <td>
-                        <a href='' class='btn btn-primary'>Editar</a>
-                    </td>
+                    <  @foreach ($vendaResource as $venda)
+
+                    <tr>
+                      <th scope="row">{{$venda->produto_id}}</th>
+                      <td>{{$venda->qtd}}</td>
+                      <td>{{$venda->preco}}</td>
+
+                      <td>
+                        <div class="container">
+                        <button type="button" class="btn btn-outline-info btn-icon btn-lg btn-block" title='Editar' onclick='location.href="{{ route('venda.edit', $venda)}}"'>
+                          Editar
+                          <i class="fa fa-pen"></i>
+                        </button>
+                        <br>
+                        <form action="{{route('venda.destroy',[$venda->id])}}" method="POST">
+                          @method('DELETE')
+                          @csrf
+                          <button  type="submit" class="btn btn-outline-danger btn-icon btn-lg btn-block" title='Deletar'>
+                            Deletar
+                            <i class="fa fa-pen"></i>
+                          </button>
+                        </div>
+                        </form>
+                      </td>
+                    </tr>
+                </div>
+                  @endforeach
                 </tr>
             </table>
         </div>
@@ -153,7 +165,7 @@
     <div class='card mt-3'>
         <div class='card-body'>
             <h5 class="card-title mb-5">Produtos
-                <a href='' class='btn btn-secondary float-right btn-sm rounded-pill'><i class='fa fa-plus'></i>  Novo produto</a></h5>
+                <a href={{route('produto.create')}} class='btn btn-secondary float-right btn-sm rounded-pill'><i class='fa fa-plus'></i>  Novo produto</a></h5>
             <table class='table'>
                 <tr>
                     <th scope="col">
@@ -167,37 +179,31 @@
                     </th>
                 </tr>
                 <tr>
-                    <td>
-                        Perfect Caps
-                    </td>
-                    <td>
-                        R$ 100,00
-                    </td>
-                    <td>
-                        <a href='' class='btn btn-primary'>Editar</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Nature Caps
-                    </td>
-                    <td>
-                        R$ 120,00
-                    </td>
-                    <td>
-                        <a href='' class='btn btn-primary'>Editar</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Libid Caps
-                    </td>
-                    <td>
-                        R$ 150,00
-                    </td>
-                    <td>
-                        <a href='' class='btn btn-primary'>Editar</a>
-                    </td>
+                    @foreach ($produtoResource as $produto)
+                    <tr>
+                      <th scope="row">{{$produto->name}}</th>
+                      <td>{{$produto->preco}}</td>
+
+                      <td>
+                        <div class="container">
+                        <button type="button" class="btn btn-outline-info btn-icon btn-lg btn-block" title='Editar' onclick='location.href="{{ route('produto.edit', $produto)}}"'>
+                          Editar
+                          <i class="fa fa-pen"></i>
+                        </button>
+                        <br>
+                        <form action="{{route('produto.destroy',[$produto->id])}}" method="POST">
+                          @method('DELETE')
+                          @csrf
+                          <button  type="submit" class="btn btn-outline-danger btn-icon btn-lg btn-block" title='Deletar'>
+                            Deletar
+                            <i class="fa fa-pen"></i>
+                          </button>
+                        </div>
+                        </form>
+                      </td>
+                    </tr>
+                </div>
+                  @endforeach
                 </tr>
             </table>
         </div>
